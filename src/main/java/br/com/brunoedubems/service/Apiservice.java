@@ -20,7 +20,6 @@ public class Apiservice {
                 .create();
 
         try {
-
             String endereco = "https://v6.exchangerate-api.com/v6/" + key + "/pair/" + conversor + "/" + valorDeConversao;
 
             HttpClient client = HttpClient.newHttpClient();
@@ -31,9 +30,8 @@ public class Apiservice {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             String jsonResponse = response.body();
-            // Desserialização
-            MoedaDto moedaParaConverter = gson.fromJson(jsonResponse, MoedaDto.class);
-            return moedaParaConverter;
+
+            return gson.fromJson(jsonResponse, MoedaDto.class);
 
 
         } catch (Exception e) {
