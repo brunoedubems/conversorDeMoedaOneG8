@@ -1,9 +1,13 @@
 package br.com.brunoedubems;
 
 import br.com.brunoedubems.dto.MoedaDto;
+import br.com.brunoedubems.moeda.ListaDeMoeda;
+import br.com.brunoedubems.moeda.Moeda;
 import br.com.brunoedubems.service.Apiservice;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -11,10 +15,12 @@ public class Main {
         Scanner leitura = new Scanner(System.in);
         String key = "af377eff959eb33368e9f791";
         Apiservice apiservice = new Apiservice();
+        List<Moeda> lista = new ArrayList<>();
 
         while (true){
             System.out.println("**********************************************");
             System.out.println("Seja bem-vindo(a) ao Conversor de Moeda da One");
+            System.out.println("0) Quero escolher as moedas para converter");
             System.out.println("1) Dólar =>>  Peso argentino");
             System.out.println("2) Peso argentino =>>  Dólar");
             System.out.println("3) Dólar =>>  Real brasileiro");
@@ -24,15 +30,24 @@ public class Main {
             System.out.println("7) Sair");
             System.out.println("**********************************************");
             System.out.print("Digite a opção que queira transformar: ");
-             String opcao = leitura.nextLine();
+            String opcao = leitura.nextLine();
 
             if (opcao.equals("7")){
                 System.out.println("Saindo do programa...");
                 break;
             }
 
-            String tipoDaConversao;
+            String tipoDaConversao ="";
             switch (opcao) {
+                case "0":
+                    ListaDeMoeda.exibirTodas();
+                    System.out.print("Digite o codigo da moeda Local: ");
+                    String moedaLocal = leitura.nextLine();
+                    System.out.print("Digite o codigo da moeda que deseja transformar: ");
+                    String moedaDeConversao = leitura.nextLine();
+                    tipoDaConversao = moedaLocal + "/" + moedaDeConversao + "/";
+
+                    break;
                 case "1":
                     tipoDaConversao = "USD/ARS/";
                     break;
@@ -62,7 +77,7 @@ public class Main {
                 leitura.nextLine();
 
                 MoedaDto resultado = apiservice.getMoeda(key,tipoDaConversao,valorDeConversao);
-                    System.out.println("O valor de " + valorDeConversao + "[" + resultado.base_code()+ "] corresponde ao valor final de ==>>> "+ resultado.conversion_result() + "["+ resultado.target_code() + "]");
+                System.out.println("O valor de " + valorDeConversao + "[" + resultado.base_code()+ "] corresponde ao valor final de ==>>> "+ resultado.conversion_result() + "["+ resultado.target_code() + "]");
             } catch (InputMismatchException e) {
                 System.out.println("Valor inválido! Certifique-se de digitar um número.");
                 leitura.nextLine();
